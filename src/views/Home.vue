@@ -33,15 +33,6 @@
         @click="submitUpload"
         >转换为json</el-button
       >
-      <el-button
-        class="copy-button"
-        size="small"
-        type="success"
-        v-clipboard:copy="copyJson"
-        v-clipboard:success="onCopy"
-        v-clipboard:error="onError"
-        >复制json到剪贴板</el-button
-      >
     </div>
     <div class="output-json">
       <json-viewer
@@ -49,6 +40,7 @@
         :value="createJson"
         :expand-depth="4"
         sort
+        copyable
       ></json-viewer>
     </div>
   </div>
@@ -71,8 +63,8 @@ export default {
     httpRequest(param) {
       // this.$confirm("触发了submit");
       let file = param.file; // 文件信息
-      console.log("param: ", param);
-      console.log("file: ", file);
+      // console.log("param: ", param);
+      // console.log("file: ", file);
 
       if (!file) {
         // 没有文件
@@ -91,13 +83,12 @@ export default {
           const workbook = XLSX.read(data, {
             type: "binary", // 以字符编码的方式解析
           });
+          console.log(workbook);
+          // SheetNames 表名数组  Sheets对象 {表名：表数据}
           const exlname = workbook.SheetNames[0]; // 取第一张表
           const exl = XLSX.utils.sheet_to_json(workbook.Sheets[exlname]); // 生成json表格内容
-          console.log("生成的json", exl);
+          // console.log("生成的json", exl);
 
-          // 将 JSON 数据挂到 data 里
-          // this.tableData = exl
-          // document.getElementsByName('file')[0].value = '' // 根据自己需求，可重置上传value为空，允许重复上传同一文件
           this.createJson = { data: exl };
           this.copyJson = JSON.stringify(this.createJson);
         } catch (e) {
@@ -109,14 +100,6 @@ export default {
     },
     submitUpload() {
       this.$refs.upload.submit();
-    },
-    // 复制成功时的回调函数
-    onCopy(e) {
-      this.$message.success("内容已复制到剪切板！");
-    },
-    // 复制失败时的回调函数
-    onError(e) {
-      this.$message.error("抱歉，复制失败！");
     },
   },
 };
