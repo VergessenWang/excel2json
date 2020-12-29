@@ -16,7 +16,7 @@
 // 主按钮样式
 .el-button--primary{
   color: white !important;
-  background-color: $menu-hover-bg !important;
+  // background-color: $menu-hover-bg !important;
   border-color: transparent !important;
   &:hover{
     background-color: rgb(100, 163, 245) !important;
@@ -35,14 +35,6 @@
     color:#fff !important;
   }
 }
-
-// // 按钮--medium
-// .el-button--medium{
-//   padding: 0 !important;
-//   width: 90px;
-//   font-size: 14px !important;
-//   height: 36px;
-// }
 
 // 按钮--small
 .el-button--small{
@@ -63,12 +55,6 @@
 .el-input{
   input{
     background-color: transparent;
-  }
-}
-
-.dialog-tab {
-  .el-dialog__body {
-    padding: 0 !important;
   }
 }
 

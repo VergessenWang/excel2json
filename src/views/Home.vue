@@ -64,7 +64,7 @@ export default {
       // 生成的json数据
       createJson: {},
       // 复制的json数据
-      copyJson: ""
+      copyJson: "",
     };
   },
   methods: {
@@ -85,11 +85,11 @@ export default {
       }
 
       const fileReader = new FileReader();
-      fileReader.onload = ev => {
+      fileReader.onload = (ev) => {
         try {
           const data = ev.target.result;
           const workbook = XLSX.read(data, {
-            type: "binary" // 以字符编码的方式解析
+            type: "binary", // 以字符编码的方式解析
           });
           const exlname = workbook.SheetNames[0]; // 取第一张表
           const exl = XLSX.utils.sheet_to_json(workbook.Sheets[exlname]); // 生成json表格内容
@@ -117,8 +117,8 @@ export default {
     // 复制失败时的回调函数
     onError(e) {
       this.$message.error("抱歉，复制失败！");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -201,5 +201,6 @@ export default {
       }
     }
   }
-}</style
+}
+</style
 >>

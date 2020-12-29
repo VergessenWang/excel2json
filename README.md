@@ -1,4 +1,4 @@
-# bank-manage-money
+![intro picture](/readme-img/pic1.png)
 
 ## Project setup
 ```
