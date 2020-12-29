@@ -23,7 +23,7 @@
         <div class="el-upload__text">将文件拖到此处，或<em> 点击上传</em></div>
 
         <div class="el-upload__tip" slot="tip">
-          只支持上传单个.xls或.xlsx文件
+          只支持上传单个.xls或.xlsx文件，但支持单文件中有多个sheet
         </div>
       </el-upload>
       <el-button
@@ -35,14 +35,19 @@
       >
     </div>
     <div class="output-json">
-      <json-viewer
-        class="json-viewer"
-        :value="createJson"
-        :expand-depth="4"
-        sort
-        copyable
-      ></json-viewer>
+      <template v-for="item in resultArr">
+        <h3 :key="item.sheetName">{{ item.sheetName }}</h3>
+        <json-viewer
+          :key="item.sheetName + '_data'"
+          class="json-viewer"
+          :value="item.sheetData"
+          :expand-depth="4"
+          sort
+          copyable
+        ></json-viewer>
+      </template>
     </div>
+    <span class="author">author@lian.wang</span>
   </div>
 </template>
 
@@ -52,16 +57,12 @@ export default {
   data() {
     return {
       fileList: [],
-      selectFile: {},
       // 生成的json数据
-      createJson: {},
-      // 复制的json数据
-      copyJson: "",
+      resultArr: [],
     };
   },
   methods: {
     httpRequest(param) {
-      // this.$confirm("触发了submit");
       let file = param.file; // 文件信息
       // console.log("param: ", param);
       // console.log("file: ", file);
@@ -83,14 +84,19 @@ export default {
           const workbook = XLSX.read(data, {
             type: "binary", // 以字符编码的方式解析
           });
-          console.log(workbook);
+          // console.log(workbook);
           // SheetNames 表名数组  Sheets对象 {表名：表数据}
-          const exlname = workbook.SheetNames[0]; // 取第一张表
-          const exl = XLSX.utils.sheet_to_json(workbook.Sheets[exlname]); // 生成json表格内容
-          // console.log("生成的json", exl);
+          let result = [];
 
-          this.createJson = { data: exl };
-          this.copyJson = JSON.stringify(this.createJson);
+          workbook.SheetNames.forEach((sheetName) => {
+            let exl = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            result.push({
+              sheetName: sheetName,
+              sheetData: { data: exl },
+            });
+          });
+
+          this.resultArr = JSON.parse(JSON.stringify(result));
         } catch (e) {
           console.log("转换出错了：：");
           return false;
@@ -107,58 +113,51 @@ export default {
 
 <style lang="scss">
 .main-container {
-  // overflow: scroll;
+  line-height: 1.5;
   height: 100vh;
   width: 100vw;
   margin: auto;
-  background: #1a164f;
+  background: $body-bg;
   .page-name {
-    // border: #fbb100 double 7px;
     padding: 10px;
     text-align: center;
     h1 {
-      color: #fbb100;
+      color: $title-yellow;
       font-size: 50px;
       font-weight: bolder;
-      filter: drop-shadow(0px 0px 5px #ffac00);
+      filter: drop-shadow(0px 0px 5px $title-filter);
       letter-spacing: 1px;
     }
     h2 {
-      color: #797699;
+      color: $main-gray;
       letter-spacing: 1px;
-      filter: drop-shadow(0px 0px 5px #797699);
+      filter: drop-shadow(0px 0px 5px $main-gray);
     }
   }
   .input-excel {
-    // width: 50vw;
     margin-top: 50px;
     .upload-excel {
       .el-upload-dragger {
         background: #262159;
-        border: rgb(255, 172, 0) !important;
+        border: $light-yellow !important;
       }
       .el-upload__text {
         color: #797699;
         em {
-          color: #ffac00;
+          color: $title-filter;
         }
       }
       .el-upload__tip {
-        color: #797699;
+        color: $main-gray;
       }
-      a {
-        // background: rgba(39, 34, 90, 1);
-        &:hover {
-          background: #1a164f;
-        }
+      li {
+        background: $gray-back;
       }
     }
     .change-button {
-      background: rgba(255, 172, 0, 0.8);
-      border: rgba(255, 172, 0, 0.8);
-      // border: solid rebeccapurple 3px;
+      background: $yellow-opc8;
+      border: $yellow-opc8;
       margin-left: 50px !important;
-      // font-weight: bold;
     }
   }
   .output-json {
@@ -166,23 +165,34 @@ export default {
     height: 50vh;
     width: 80vw;
     margin: auto;
-    // padding: 10px;
-    border: rgba(39, 34, 90, 1) solid 1px;
+    margin-top: 10px;
+    border: $gray-back solid 1px;
     border-radius: 8px;
+    h3 {
+      color: $yellow-opc8;
+      text-align: center;
+      padding: 10px 0;
+    }
     .json-viewer {
-      background: rgba(39, 34, 90, 1);
+      background: $gray-back;
       span {
-        color: rgba(255, 172, 0, 0.65);
+        color: $yellow-opc6;
       }
       .jv-object,
       .jv-array {
-        // border: yellow solid 3px;
-        color: rgba(255, 172, 0, 0.65) !important;
+        color: $yellow-opc6 !important;
       }
       .jv-ellipsis {
-        background: rgba(39, 34, 90, 1);
+        background: $gray-back;
       }
     }
+  }
+  .author {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    color: $yellow-opc8;
+    font-size: 12px;
   }
 }
 </style

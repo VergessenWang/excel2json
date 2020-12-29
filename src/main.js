@@ -7,7 +7,7 @@ import store from "./store";
 import "@/scss/bootstrap.scss";
 import "@/scss/reset.scss";
 import "@/scss/elementui.scss";
-import "@/scss/index.scss";
+// import "@/scss/index.scss";
 import "@/util/rem";
 import 'default-passive-events';
 
@@ -22,8 +22,8 @@ import JsonViewer from 'vue-json-viewer'
 Vue.use(JsonViewer)
 
 // 复制内容到剪贴板
-import VueClipboard from 'vue-clipboard2'
-Vue.use(VueClipboard)
+// import VueClipboard from 'vue-clipboard2'
+// Vue.use(VueClipboard)
 
 // 阻止 vue 在启动时生成生产提示
 Vue.config.productionTip = false;
