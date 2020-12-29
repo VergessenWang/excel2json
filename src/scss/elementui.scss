@@ -1,0 +1,79 @@
+
+// Element ui 样式
+
+// 按钮样式
+.el-button{
+  height: 36px;
+  padding: 0 20px !important;
+  border-radius: 4px;
+}
+
+.el-button--small{
+  height: 28px !important;
+  border-radius: 14px !important;
+}
+
+// 主按钮样式
+.el-button--primary{
+  color: white !important;
+  background-color: $menu-hover-bg !important;
+  border-color: transparent !important;
+  &:hover{
+    background-color: rgb(100, 163, 245) !important;
+    border-color: none !important;
+  }
+}
+
+//警告按钮样式
+.el-button--warning{
+  color: #fff !important;
+  background-color: rgb(199, 55, 50)!important;
+  border-color: transparent !important;
+  &:hover{
+    background-color: rgb(230, 10, 2) !important;
+    border-color: transparent !important;
+    color:#fff !important;
+  }
+}
+
+// // 按钮--medium
+// .el-button--medium{
+//   padding: 0 !important;
+//   width: 90px;
+//   font-size: 14px !important;
+//   height: 36px;
+// }
+
+// 按钮--small
+.el-button--small{
+  padding: 0 20px !important;
+  height: 32px;
+}
+
+// 按钮--mini
+.el-button--mini{
+  padding: 0 !important;
+  width: 80px;
+  font-size: 14px !important;
+  height: 30px;
+}
+
+
+// 输入框样式
+.el-input{
+  input{
+    background-color: transparent;
+  }
+}
+
+.dialog-tab {
+  .el-dialog__body {
+    padding: 0 !important;
+  }
+}
+
+// form表单样式
+.el-form-item__label{
+  color:  #383838 !important;
+}
+
