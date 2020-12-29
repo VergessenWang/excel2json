@@ -1,4 +1,4 @@
-![intro picture](/readme-img/pic1.png)
+![](https://blog-picture-wallen.oss-cn-hangzhou.aliyuncs.com/2020/12/30/pic1.png)
 
 借助第三方库
 + element-ui的upload: 实现文件上传
