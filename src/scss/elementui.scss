@@ -96,4 +96,17 @@
       background: $light-green;
     }
   }
+  .json-viewer {
+    background: $gray-back;
+    span {
+      color: $yellow-opc6;
+    }
+    .jv-object,
+    .jv-array {
+      color: $yellow-opc6 !important;
+    }
+    .jv-ellipsis {
+      background: $gray-back;
+    }
+  }
 }

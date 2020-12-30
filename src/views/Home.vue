@@ -77,16 +77,21 @@
       width="30%"
       center
     >
-      <el-form class="">
+      <el-form class="dia-suggest-form">
         <el-form-item label="API - Name">
           <el-input v-model="api.name"></el-input>
         </el-form-item>
         <el-form-item label="API - URL (由name翻译生成英文url，需联网)">
           <el-input v-model="api.url"></el-input>
         </el-form-item>
-        <el-form-item label="API - Response">
-          <el-input v-model="api.response"></el-input>
-        </el-form-item>
+        <p class="api-res">API - Response</p>
+        <json-viewer
+          class="json-viewer"
+          :value="api.response"
+          :expand-depth="0"
+          sort
+          copyable
+        ></json-viewer>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" type="success" @click="isShowSuggest = false"
@@ -114,8 +119,8 @@ export default {
       // 生成的api建议
       api: {
         name: "",
-        url: "22",
-        response: "33",
+        url: "",
+        response: "",
       },
       // 百度翻译api的token
       appid: "20201230000659839",
@@ -168,6 +173,7 @@ export default {
       fileReader.readAsBinaryString(file);
       this.resultArr = [];
     },
+    // 调用httpRequest方法
     submitUpload() {
       this.$refs.upload.submit();
     },
@@ -176,12 +182,15 @@ export default {
       // this.$confirm(val);
       this.submitUpload();
     },
+    // 挂载弹窗数据
     suggest(val) {
-      console.log(val);
+      // console.log(val);
       this.api.name = val.sheetName;
       this.translateUrl(this.api.name);
+      this.api.response = val.sheetData;
       this.isShowSuggest = true;
     },
+    // 调用百度翻译api，利用中文name生成url
     translateUrl(zhText) {
       let vm = this;
       $.ajax({
@@ -204,7 +213,6 @@ export default {
           }
           vm.api.url = "/" + transResult.split(" ").join("-");
           // console.log("url", vm.api.url);
-          // vm.$set(vm.$data, "translatedText", data.translation[0]);
         },
       });
     },
@@ -299,7 +307,6 @@ export default {
         color: $light-green;
       }
     }
-
     .json-viewer {
       background: $gray-back;
       span {
@@ -320,6 +327,31 @@ export default {
     bottom: 10px;
     color: $yellow-opc8;
     font-size: 12px;
+  }
+  .dia-suggest-form {
+    .api-res {
+      color: $main-gray;
+      margin-bottom: 5px;
+    }
+    .json-viewer {
+      background: $gray-back;
+
+      border: 1px #fff solid;
+      border-radius: 4px;
+      span {
+        color: $yellow-opc6;
+      }
+      .jv-object,
+      .jv-array {
+        color: $yellow-opc6 !important;
+      }
+      .jv-ellipsis {
+        background: $gray-back;
+      }
+      .jv-code {
+        // padding: 1px;
+      }
+    }
   }
 }
 </style
