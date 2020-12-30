@@ -99,6 +99,8 @@
 
 <script>
 import XLSX from "xlsx";
+import md5 from "blueimp-md5";
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -115,6 +117,10 @@ export default {
         url: "22",
         response: "33",
       },
+      // 百度翻译api的token
+      appid: "20201230000659839",
+      key: "RSjQTGUnoJgaxpQ1fbcQ",
+      salt: new Date().getTime(),
     };
   },
   methods: {
@@ -173,7 +179,34 @@ export default {
     suggest(val) {
       console.log(val);
       this.api.name = val.sheetName;
+      this.translateUrl(this.api.name);
       this.isShowSuggest = true;
+    },
+    translateUrl(zhText) {
+      let vm = this;
+      $.ajax({
+        url: "http://api.fanyi.baidu.com/api/trans/vip/translate",
+        type: "post",
+        dataType: "jsonp",
+        data: {
+          q: zhText,
+          appid: this.appid,
+          salt: this.salt,
+          from: "auto",
+          to: "en",
+          sign: md5(this.appid + zhText + this.salt + this.key),
+        },
+        success: function (data) {
+          // console.log("翻译返回", data);
+          let transResult = data.trans_result[0].dst;
+          if (transResult === "undefined") {
+            vm.$message.warning("无法获取翻译结果，请自行定义URL");
+          }
+          vm.api.url = "/" + transResult.split(" ").join("-");
+          // console.log("url", vm.api.url);
+          // vm.$set(vm.$data, "translatedText", data.translation[0]);
+        },
+      });
     },
   },
 };

@@ -4,6 +4,7 @@
 + element-ui的upload: 实现文件上传
 + xlsx: 实现文件转换
 + vue-json-viewer: 实现json格式化和复制
++ 百度翻译api实现url自动生成
 
 更多功能待优化中...
 

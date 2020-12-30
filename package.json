@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "animate.css": "^4.1.0",
+    "blueimp-md5": "^2.18.0",
     "core-js": "^3.6.4",
     "default-passive-events": "^2.0.0",
     "element-ui": "^2.13.2",
