@@ -35,7 +35,7 @@
       >
     </div>
     <div class="option-container">
-      <span>Json展开级数：</span>
+      <span>Json展开级数： </span>
       <el-radio-group v-model="jsonDeep" @change="deepChange">
         <el-radio :label="0">0级</el-radio>
         <el-radio :label="1">1级</el-radio>
@@ -46,7 +46,19 @@
     </div>
     <div class="output-json">
       <template v-for="item in resultArr">
-        <h3 :key="item.sheetName">{{ item.sheetName }}</h3>
+        <header
+          :key="item.sheetName + '_header'"
+          class="d-flex align-items-center justify-content-between"
+        >
+          <h3 :key="item.sheetName">{{ item.sheetName }}</h3>
+          <el-button
+            class="suggest-button"
+            size="small"
+            type="success"
+            @click="suggest(item)"
+            >生成api建议</el-button
+          >
+        </header>
         <json-viewer
           :key="item.sheetName + '_data'"
           class="json-viewer"
@@ -183,8 +195,10 @@ export default {
     width: 78vw;
     margin: auto;
     margin-top: 10px;
+    text-align: right;
     span {
       // vertical-align: center;
+      font-size: 12px !important;
       color: $light-yellow;
     }
   }
@@ -196,11 +210,21 @@ export default {
     margin-top: 10px;
     border: $gray-back solid 1px;
     border-radius: 8px;
-    h3 {
-      color: $yellow-opc8;
-      text-align: center;
-      padding: 10px 0;
+    header {
+      margin: auto 20px;
+      margin-right: 0px;
+      h3 {
+        color: $yellow-opc8;
+        text-align: center;
+        padding: 10px 0;
+      }
+      .suggest-button {
+        background: $body-bg;
+        border: none;
+        color: $light-green;
+      }
     }
+
     .json-viewer {
       background: $gray-back;
       span {
