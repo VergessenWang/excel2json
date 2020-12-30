@@ -59,7 +59,7 @@
 
 // form表单样式
 .el-form-item__label{
-  color:  #383838 !important;
+  color:  $main-gray !important;
 }
 
 // 更改单选框样式
@@ -79,5 +79,21 @@
   .el-radio__input.is-checked .el-radio__inner {
     background: $light-yellow !important;
     border-color: $light-yellow  !important;
+  }
+}
+
+//弹窗样式
+.el-dialog {
+  background: $gray-back !important;
+  .el-dialog__title{
+  color:$main-gray
+  }
+  .el-button{
+    background: $yellow-opc8;
+    border: $yellow-opc8;
+    transition: .6s;
+    &:hover {
+      background: $light-green;
+    }
   }
 }

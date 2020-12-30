@@ -70,6 +70,30 @@
       </template>
     </div>
     <span class="author">author@lian.wang</span>
+    <el-dialog
+      title="生成api建议"
+      :visible.sync="isShowSuggest"
+      top="40vh"
+      width="30%"
+      center
+    >
+      <el-form class="">
+        <el-form-item label="API - Name">
+          <el-input v-model="api.name"></el-input>
+        </el-form-item>
+        <el-form-item label="API - URL (由name翻译生成英文url，需联网)">
+          <el-input v-model="api.url"></el-input>
+        </el-form-item>
+        <el-form-item label="API - Response">
+          <el-input v-model="api.response"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" type="success" @click="isShowSuggest = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -81,7 +105,16 @@ export default {
       fileList: [],
       // 生成的json数据
       resultArr: [],
+      // json数据层数
       jsonDeep: 3,
+      // 是否显示suggest弹窗
+      isShowSuggest: false,
+      // 生成的api建议
+      api: {
+        name: "",
+        url: "22",
+        response: "33",
+      },
     };
   },
   methods: {
@@ -137,6 +170,11 @@ export default {
       // this.$confirm(val);
       this.submitUpload();
     },
+    suggest(val) {
+      console.log(val);
+      this.api.name = val.sheetName;
+      this.isShowSuggest = true;
+    },
   },
 };
 </script>
@@ -188,6 +226,10 @@ export default {
       background: $yellow-opc8;
       border: $yellow-opc8;
       margin-left: 50px !important;
+      transition: 0.6s;
+      &:hover {
+        background: $light-green;
+      }
     }
   }
   .option-container {
