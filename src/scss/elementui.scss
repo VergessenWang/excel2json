@@ -62,3 +62,22 @@
   color:  #383838 !important;
 }
 
+// 更改单选框样式
+.el-radio {
+  .el-radio__label {
+    color:$main-gray !important;
+  }
+  &:hover {
+    //鼠标滑过时小圆点边框显示
+    .el-radio__inner {
+      border-color:$light-yellow !important;
+    }
+  }
+  .el-radio__input.is-checked + .el-radio__label {
+    color: $light-yellow !important;
+  }
+  .el-radio__input.is-checked .el-radio__inner {
+    background: $light-yellow !important;
+    border-color: $light-yellow  !important;
+  }
+}

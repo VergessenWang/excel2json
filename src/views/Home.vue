@@ -34,6 +34,16 @@
         >转换为json</el-button
       >
     </div>
+    <div class="option-container">
+      <span>Json展开级数：</span>
+      <el-radio-group v-model="jsonDeep" @change="deepChange">
+        <el-radio :label="0">0级</el-radio>
+        <el-radio :label="1">1级</el-radio>
+        <el-radio :label="2">2级</el-radio>
+        <el-radio :label="3">3级</el-radio>
+        <el-radio :label="4">4级</el-radio>
+      </el-radio-group>
+    </div>
     <div class="output-json">
       <template v-for="item in resultArr">
         <h3 :key="item.sheetName">{{ item.sheetName }}</h3>
@@ -41,7 +51,7 @@
           :key="item.sheetName + '_data'"
           class="json-viewer"
           :value="item.sheetData"
-          :expand-depth="4"
+          :expand-depth="jsonDeep"
           sort
           copyable
         ></json-viewer>
@@ -59,10 +69,12 @@ export default {
       fileList: [],
       // 生成的json数据
       resultArr: [],
+      jsonDeep: 3,
     };
   },
   methods: {
     httpRequest(param) {
+      // this.$confirm("触发了吗");
       let file = param.file; // 文件信息
       // console.log("param: ", param);
       // console.log("file: ", file);
@@ -103,9 +115,15 @@ export default {
         }
       };
       fileReader.readAsBinaryString(file);
+      this.resultArr = [];
     },
     submitUpload() {
       this.$refs.upload.submit();
+    },
+    // 更改深度
+    deepChange(val) {
+      // this.$confirm(val);
+      this.submitUpload();
     },
   },
 };
@@ -158,6 +176,16 @@ export default {
       background: $yellow-opc8;
       border: $yellow-opc8;
       margin-left: 50px !important;
+    }
+  }
+  .option-container {
+    // border: khaki solid 3px;
+    width: 78vw;
+    margin: auto;
+    margin-top: 10px;
+    span {
+      // vertical-align: center;
+      color: $light-yellow;
     }
   }
   .output-json {
