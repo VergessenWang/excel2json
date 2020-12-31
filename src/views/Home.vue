@@ -346,5 +346,4 @@ export default {
     }
   }
 }
-</style
->
+</style>
