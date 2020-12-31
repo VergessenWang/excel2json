@@ -76,6 +76,7 @@
       top="40vh"
       width="30%"
       center
+      :close-on-click-modal="false"
     >
       <el-form class="dia-suggest-form">
         <el-form-item label="API - Name">
@@ -130,10 +131,7 @@ export default {
   },
   methods: {
     httpRequest(param) {
-      // this.$confirm("触发了吗");
       let file = param.file; // 文件信息
-      // console.log("param: ", param);
-      // console.log("file: ", file);
 
       if (!file) {
         // 没有文件
@@ -152,7 +150,6 @@ export default {
           const workbook = XLSX.read(data, {
             type: "binary", // 以字符编码的方式解析
           });
-          // console.log(workbook);
           // SheetNames 表名数组  Sheets对象 {表名：表数据}
           let result = [];
 
@@ -179,12 +176,10 @@ export default {
     },
     // 更改深度
     deepChange(val) {
-      // this.$confirm(val);
       this.submitUpload();
     },
     // 挂载弹窗数据
     suggest(val) {
-      // console.log(val);
       this.api.name = val.sheetName;
       this.translateUrl(this.api.name);
       this.api.response = val.sheetData;
@@ -195,7 +190,7 @@ export default {
       let vm = this;
       $.ajax({
         url: "http://api.fanyi.baidu.com/api/trans/vip/translate",
-        type: "post",
+        type: "get",
         dataType: "jsonp",
         data: {
           q: zhText,
@@ -206,13 +201,15 @@ export default {
           sign: md5(this.appid + zhText + this.salt + this.key),
         },
         success: function (data) {
-          // console.log("翻译返回", data);
           let transResult = data.trans_result[0].dst;
-          if (transResult === "undefined") {
-            vm.$message.warning("无法获取翻译结果，请自行定义URL");
-          }
-          vm.api.url = "/" + transResult.split(" ").join("-");
-          // console.log("url", vm.api.url);
+          // 首字母转小写
+          let splitArr = transResult.split(" ");
+          splitArr[0] = splitArr[0].toLowerCase();
+          //  拼接url
+          vm.api.url = "/" + splitArr.join("-");
+        },
+        error: function (e) {
+          vm.$message.warning("无法获取翻译结果，请自行定义URL");
         },
       });
     },
@@ -274,13 +271,11 @@ export default {
     }
   }
   .option-container {
-    // border: khaki solid 3px;
     width: 78vw;
     margin: auto;
     margin-top: 10px;
     text-align: right;
     span {
-      // vertical-align: center;
       font-size: 12px !important;
       color: $light-yellow;
     }
@@ -348,11 +343,8 @@ export default {
       .jv-ellipsis {
         background: $gray-back;
       }
-      .jv-code {
-        // padding: 1px;
-      }
     }
   }
 }
 </style
->>
+>
