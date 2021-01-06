@@ -81,9 +81,15 @@
       <el-form class="dia-suggest-form">
         <el-form-item label="API - Name">
           <el-input v-model="api.name"></el-input>
+          <el-button class="copy-button" size="small" @click="copy(api.name)"
+            >copy</el-button
+          >
         </el-form-item>
         <el-form-item label="API - URL (由name翻译生成英文url，需联网)">
           <el-input v-model="api.url"></el-input>
+          <el-button class="copy-button" size="small" @click="copy(api.url)"
+            >copy</el-button
+          >
         </el-form-item>
         <p class="api-res">API - Response</p>
         <json-viewer
@@ -213,6 +219,22 @@ export default {
         },
       });
     },
+    // 弹窗中两个复制按钮
+    copy(val) {
+      let vm = this;
+      this.$copyText(val).then(
+        function (e) {
+          // console.log("copy arguments e:", e);
+          // alert("复制成功!");
+          vm.$message.success("复制成功！");
+        },
+        function (e) {
+          // console.log("copy arguments e:", e);
+          // alert("复制失败!");
+          vm.$message.warning("复制失败");
+        }
+      );
+    },
   },
 };
 </script>
@@ -324,6 +346,18 @@ export default {
     font-size: 12px;
   }
   .dia-suggest-form {
+    /deep/ .el-form-item {
+      position: relative;
+      .copy-button {
+        position: absolute;
+        font-size: 11px;
+        right: 16px;
+        bottom: 5px;
+        background: $gray-back;
+        padding: 0 !important;
+        color: $yellow-opc6;
+      }
+    }
     .api-res {
       color: $main-gray;
       margin-bottom: 5px;
