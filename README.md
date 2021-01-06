@@ -9,7 +9,7 @@
 + json一键格式化复制
 
 
-![](https://blog-picture-wallen.oss-cn-hangzhou.aliyuncs.com/2021/01/06/20210106223605.png)
+![](https://blog-picture-wallen.oss-cn-hangzhou.aliyuncs.com/2021/01/06/pic2.png)
 
 高级功能
 + 每个sheet中的表都可以生成对应的api建议，其中name取自表名，url通过调用百度翻译api接口拼接而来，response主要提供复制。该功能旨在快速建立rap2等mock接口
