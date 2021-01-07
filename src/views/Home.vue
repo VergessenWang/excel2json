@@ -156,11 +156,28 @@ export default {
           const workbook = XLSX.read(data, {
             type: "binary", // 以字符编码的方式解析
           });
+          console.log("workbook转换前", workbook);
+          // E3: {t: "n", v: 43861, w: "1/31/20"} 日期会被转为数值
+          // 这里统一把 t:"n" 即 number类型转为 "s" 用w替换v
+          // workbook.SheetNames.forEach((sheetName) => {
+          //   const currentSheet = workbook.Sheets[sheetName];
+          //   Object.keys(currentSheet).forEach((key) => {
+          //     console.log("key.t", key.t);
+          //     if (key.t === "n") {
+          //       console.log("走到这里了吗");
+          //       currentSheet.key.t = "s";
+          //       currentSheet.key.v = key.w;
+          //     }
+          //   });
+          //   console.log("currentSheet", currentSheet);
+          // });
+          // console.log("workbook转换后", workbook);
           // SheetNames 表名数组  Sheets对象 {表名：表数据}
           let result = [];
 
           workbook.SheetNames.forEach((sheetName) => {
             let exl = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            console.log("exl", exl);
             result.push({
               sheetName: sheetName,
               sheetData: { data: exl },
@@ -194,6 +211,12 @@ export default {
     // 调用百度翻译api，利用中文name生成url
     translateUrl(zhText) {
       let vm = this;
+      // 去掉转义字符
+      zhText = zhText.replace(/[\b\f\n\r\t\s]/g, "");
+      // 去掉特殊字符
+      const pattern = /[-_`~!@#$^&*()=|{}':;',\\[\].<>/?~！@#￥……&*（）——|{}【】'；：""'。，、？]/g;
+      zhText = zhText.replace(pattern, "");
+      console.log(zhText);
       $.ajax({
         url: "http://api.fanyi.baidu.com/api/trans/vip/translate",
         type: "get",
@@ -208,9 +231,10 @@ export default {
         },
         success: function (data) {
           let transResult = data.trans_result[0].dst;
+          transResult = transResult.toLowerCase();
+          // console.log(transResult);
           // 首字母转小写
           let splitArr = transResult.split(" ");
-          splitArr[0] = splitArr[0].toLowerCase();
           //  拼接url
           vm.api.url = "/" + splitArr.join("-");
         },

@@ -1,4 +1,4 @@
-[在线地址](http://wallenwang.gitee.io/excel2json-online/) --- 有时可能未同步部署更新
+[在线地址](http://wallenwang.gitee.io/excel2json-online/) --- 有时可能未同步部署更新，或者由于是静态部署的，需要手动刷新获取最新页面
 
 ![](https://blog-picture-wallen.oss-cn-hangzhou.aliyuncs.com/2020/12/30/pic1.png)
 
@@ -14,8 +14,12 @@
 高级功能
 + 每个sheet中的表都可以生成对应的api建议，其中name取自表名，url通过调用百度翻译api接口拼接而来，response主要提供复制。该功能旨在快速建立rap2等mock接口
 
-后续更新
+后续更新及Bug修复
 + 【2021/01/06】在生成建议的name和url旁添加copy按钮进行复制，是的，就是这莫懒，甚至都不想选中按ctrl+c...
++ 【2021/01/07】优化url格式: 当sheet名中含有特殊符号时，生成的url时要进行过滤。去掉中文的转义字符和特殊字符，并对英文全部转为小写。
++ 【2021/01/07】json时间类型转换问题: excel中的日期类型会被转为4xxxx形式的值，需要进行回转。
+
+
 
 借助第三方库
 + element-ui的upload: 实现文件上传
