@@ -233,7 +233,14 @@ export default {
     },
     // 挂载弹窗数据
     suggest(val) {
-      this.api.name = val.sheetName;
+      let apiName = "";
+      apiName = val.sheetName;
+      // 去掉转义字符
+      apiName = apiName.replace(/[\b\f\n\r\t]/g, "");
+      // 去掉特殊字符
+      const pattern = /[`~!@#$^&*()=|{}':;',\\[\].<>/?~！@#￥……&*（）——|{}【】'；：""'。，、？]/g;
+      apiName = apiName.replace(pattern, "");
+      this.api.name = apiName;
       this.translateUrl(this.api.name);
       this.api.response = val.sheetData;
       this.isShowSuggest = true;
@@ -241,12 +248,9 @@ export default {
     // 调用百度翻译api，利用中文name生成url
     translateUrl(zhText) {
       let vm = this;
-      // 去掉转义字符
-      zhText = zhText.replace(/[\b\f\n\r\t\s]/g, "");
-      // 去掉特殊字符
-      const pattern = /[-_`~!@#$^&*()=|{}':;',\\[\].<>/?~！@#￥……&*（）——|{}【】'；：""'。，、？]/g;
-      zhText = zhText.replace(pattern, "");
-      console.log(zhText);
+      // console.log(zhText);
+      let reg = /[-\s_]/g;
+      zhText = zhText.replace(reg, "");
       $.ajax({
         url: "http://api.fanyi.baidu.com/api/trans/vip/translate",
         type: "get",
