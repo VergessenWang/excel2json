@@ -158,20 +158,31 @@ export default {
           });
           console.log("workbook转换前", workbook);
           // E3: {t: "n", v: 43861, w: "1/31/20"} 日期会被转为数值
+          // E2: {t: "n", v: 43850, w: "2020年1月20日"}
+          // E3: {t: "n", v: 43861, w: "2020/1/31 12:00 AM"}
+          // E4: {t: "n", v: 37256, w: "2001/12/31"}
+          // E5: {t: "n", v: 43850, w: "1/20/20"}
           // 这里统一把 t:"n" 即 number类型转为 "s" 用w替换v
-          // workbook.SheetNames.forEach((sheetName) => {
-          //   const currentSheet = workbook.Sheets[sheetName];
-          //   Object.keys(currentSheet).forEach((key) => {
-          //     console.log("key.t", key.t);
-          //     if (key.t === "n") {
-          //       console.log("走到这里了吗");
-          //       currentSheet.key.t = "s";
-          //       currentSheet.key.v = key.w;
-          //     }
-          //   });
-          //   console.log("currentSheet", currentSheet);
-          // });
-          // console.log("workbook转换后", workbook);
+          let reg = /[/年月日]/;
+          workbook.SheetNames.forEach((sheetName) => {
+            const currentSheet = workbook.Sheets[sheetName];
+            Object.keys(currentSheet).forEach((key) => {
+              if (currentSheet[key].t === "n") {
+                currentSheet[key].t = "s";
+                // 一般来说，只有时间类型的数值才会有/年月日的存在，于是用这个条件进行判断
+                if (currentSheet[key].w.match(reg)) {
+                  currentSheet[key].v = this.formatExcelDate(
+                    currentSheet[key].v,
+                    "/"
+                  );
+                } else {
+                  currentSheet[key].v = currentSheet[key].w;
+                }
+              }
+            });
+            console.log("currentSheet", currentSheet);
+          });
+          console.log("workbook转换后", workbook);
           // SheetNames 表名数组  Sheets对象 {表名：表数据}
           let result = [];
 
@@ -192,6 +203,25 @@ export default {
       };
       fileReader.readAsBinaryString(file);
       this.resultArr = [];
+    },
+    // 时间格式化
+    formatExcelDate(num, format) {
+      num = Number(num); // 强制类型转化，以防传来的值是字符串
+      let millisecond = 0; // 转化后的毫秒数
+      if (num > 60) {
+        millisecond = (num - 25569) * 60 * 60 * 24 * 1000;
+      } else {
+        // 对小于61的错误日期进行处理
+        millisecond = (num - 25568) * 60 * 60 * 24 * 1000;
+      }
+      let date = new Date(millisecond); // 根据转化后的毫秒数获取对应的时间
+      let yy = date.getFullYear();
+      let mm =
+        date.getMonth() + 1 < 10
+          ? "0" + (date.getMonth() + 1)
+          : date.getMonth() + 1;
+      let dd = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      return yy + format + mm + format + dd; // 返回格式化后的日期
     },
     // 调用httpRequest方法
     submitUpload() {

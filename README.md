@@ -17,7 +17,7 @@
 后续更新及Bug修复
 + 【2021/01/06】在生成建议的name和url旁添加copy按钮进行复制，是的，就是这莫懒，甚至都不想选中按ctrl+c...
 + 【2021/01/07】优化url格式: 当sheet名中含有特殊符号时，生成的url时要进行过滤。去掉中文的转义字符和特殊字符，并对英文全部转为小写。
-+ 【2021/01/07】json时间类型转换问题: excel中的日期类型会被转为4xxxx形式的值，需要进行回转。
++ 【2021/01/07】json时间类型转换问题: excel中的日期类型会被转为4xxxx形式的值，需要进行回转。调试中发现，如E3: {t: "n", v: 43861, w: "1/31/20"} 日期会被转为数值，且形如2020/1/20 会被默认转为mm/dd/yy格式。通过一定的匹配后进行时间格式的转换, 中间遇到了有的时间会莫名其妙多一天的情况，后来发现是1900的2月29号导致的。[参考链接](https://blog.csdn.net/qq_40662765/article/details/109326067?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-1.control)。由于是通过时间戳进行转换的，不管 2020年1月20日 -或者- 2020/1/31 12:00AM -或者- 2001/12/31 -或者- 1/20/20 形式的时间，都会被统一转为 yyyy/mm/dd 的格式，只精确到日
 
 
 
