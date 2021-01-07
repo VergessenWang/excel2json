@@ -156,7 +156,6 @@ export default {
           const workbook = XLSX.read(data, {
             type: "binary", // 以字符编码的方式解析
           });
-          console.log("workbook转换前", workbook);
           // E3: {t: "n", v: 43861, w: "1/31/20"} 日期会被转为数值
           // E2: {t: "n", v: 43850, w: "2020年1月20日"}
           // E3: {t: "n", v: 43861, w: "2020/1/31 12:00 AM"}
@@ -180,15 +179,12 @@ export default {
                 }
               }
             });
-            console.log("currentSheet", currentSheet);
           });
-          console.log("workbook转换后", workbook);
           // SheetNames 表名数组  Sheets对象 {表名：表数据}
           let result = [];
 
           workbook.SheetNames.forEach((sheetName) => {
             let exl = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
-            console.log("exl", exl);
             result.push({
               sheetName: sheetName,
               sheetData: { data: exl },
@@ -197,7 +193,7 @@ export default {
 
           this.resultArr = JSON.parse(JSON.stringify(result));
         } catch (e) {
-          console.log("转换出错了：：");
+          console.log("转换出错了");
           return false;
         }
       };
@@ -248,7 +244,6 @@ export default {
     // 调用百度翻译api，利用中文name生成url
     translateUrl(zhText) {
       let vm = this;
-      // console.log(zhText);
       let reg = /[-\s_]/g;
       zhText = zhText.replace(reg, "");
       $.ajax({
@@ -266,7 +261,6 @@ export default {
         success: function (data) {
           let transResult = data.trans_result[0].dst;
           transResult = transResult.toLowerCase();
-          // console.log(transResult);
           // 首字母转小写
           let splitArr = transResult.split(" ");
           //  拼接url
@@ -282,13 +276,9 @@ export default {
       let vm = this;
       this.$copyText(val).then(
         function (e) {
-          // console.log("copy arguments e:", e);
-          // alert("复制成功!");
           vm.$message.success("复制成功！");
         },
         function (e) {
-          // console.log("copy arguments e:", e);
-          // alert("复制失败!");
           vm.$message.warning("复制失败");
         }
       );
